@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>dotnet-Mir.WorkServerTemplate-44847D1A-49CA-49EB-8127-92C06DB4385A</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Service\DbContext.cs" />
+    <Compile Remove="Service\ISettingService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.8" />
+    <PackageReference Include="sqlSugarCore" Version="5.0.0.18" />
+  </ItemGroup>
+</Project>

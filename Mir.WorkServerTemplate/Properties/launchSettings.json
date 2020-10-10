@@ -1,0 +1,10 @@
+﻿{
+  "profiles": {
+    "Mir.WorkServerTemplate": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
