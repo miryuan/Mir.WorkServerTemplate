@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Mir.WorkServer.Entity;
 using Mir.WorkServer.Service;
 using System;
 using System.Threading;
@@ -12,19 +11,17 @@ namespace Mir.WorkServer.Works
     {
         private readonly ILogger<MainWorker> _logger;
         private readonly SettingService _db;
+        private readonly DefaultDataBaseService _ddbs;
 
-        public MainWorker(ILogger<MainWorker> logger, SettingService setting)
+        public MainWorker(ILogger<MainWorker> logger, SettingService setting, DefaultDataBaseService ddbs)
         {
             _logger = logger;
             _db = setting;
+            _ddbs = ddbs;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            //var settings = _db.Client.Queryable<Settings>().ToList();
-            
-
-
             while (!stoppingToken.IsCancellationRequested)
             {
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);

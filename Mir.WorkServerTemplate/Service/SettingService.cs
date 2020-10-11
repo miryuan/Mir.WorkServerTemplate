@@ -2,9 +2,6 @@
 using SqlSugar;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net.NetworkInformation;
-using System.Text;
 
 namespace Mir.WorkServer.Service
 {
@@ -13,7 +10,14 @@ namespace Mir.WorkServer.Service
     /// </summary>
     public class SettingService
     {
-        public SqlSugarClient Client { get; private set; }//这个时候因为TestService3给静态变相的Db也变成静态的了
+        /// <summary>
+        /// SqlSugar客户端
+        /// </summary>
+        private SqlSugarClient Client { get; set; }
+        /// <summary>
+        /// 配置文件字典
+        /// </summary>
+        public Dictionary<string, string> SettingsDictionary { get; private set; }
         /// <summary>
         /// 
         /// </summary>
@@ -29,12 +33,72 @@ namespace Mir.WorkServer.Service
                 IsAutoCloseConnection = isAutoCloseConnection,
                 InitKeyType = InitKeyType.Attribute //SystemTable用于Codefirst从model库生成数据库表的;而Attribute用于DbFirst
             });
-            Client.Aop.OnLogExecuting = (sql, paramters) =>
-            {
-                Console.WriteLine(sql);
-            };
+            //Client.Aop.OnLogExecuting = (sql, paramters) =>
+            //{
+            //    Console.WriteLine(sql);
+            //};
 
             CheckSettingsTable();
+        }
+
+        private List<Settings> GetKeyValueList()
+        {
+            return Client.Queryable<Settings>().ToList();
+        }
+
+        /// <summary>
+        /// 刷新配置文件字典
+        /// </summary>
+        public void RefreshDictionary()
+        {
+            if (SettingsDictionary != null)
+                SettingsDictionary.Clear();
+            else
+                SettingsDictionary = new Dictionary<string, string>();
+
+            var li = GetKeyValueList();
+            foreach (var item in li)
+                SettingsDictionary.Add(item.key, item.value);
+        }
+
+        /// <summary>
+        /// 添加配置
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public bool AddSetting(string key, string value)
+        {
+            bool flag = false;
+            if (!SettingsDictionary.ContainsKey(key.Trim()))
+            {
+                flag = Client.Insertable<Settings>(new Settings() { key = key.Trim(), value = value.Trim() }).ExecuteCommand() > 0 ? true : false;
+                RefreshDictionary();
+            }
+
+            return flag;
+        }
+
+        /// <summary>
+        /// 检查Key是否在字典中
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public bool CheckKey(string key)
+        {
+            return SettingsDictionary.ContainsKey(key.Trim());
+        }
+
+        /// <summary>
+        /// 获取键值对
+        /// </summary>
+        /// <returns></returns>
+        public string GetSetting(string key)
+        {
+            if (CheckKey(key))
+                return SettingsDictionary[key.Trim()];
+            else
+                return string.Empty;
         }
 
         /// <summary>
@@ -49,8 +113,10 @@ namespace Mir.WorkServer.Service
                 InitSettingsTable();
                 InitSettingsTableData();
             }
+            RefreshDictionary();
         }
 
+        #region 创建表和数据库以及填充基础数据
         /// <summary>
         /// 创建表
         /// </summary>
@@ -66,8 +132,9 @@ namespace Mir.WorkServer.Service
         {
             List<Settings> li = new List<Settings>();
             li.Add(new Settings() { key = "ApplicationTitle", value = "模板程序" });
-
+            li.Add(new Settings() { key = "DBBuildDate", value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") });
             Client.Insertable<Settings>(li).ExecuteCommand();
         }
+        #endregion
     }
 }

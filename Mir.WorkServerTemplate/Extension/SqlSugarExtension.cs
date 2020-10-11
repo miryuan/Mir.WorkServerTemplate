@@ -53,5 +53,21 @@ namespace Mir.WorkServer.Extension
                  connectionString
             ));
         }
+
+        /// <summary>
+        /// 注入默认数据库服务(Transient)
+        /// </summary>
+        /// <param name="service"></param>
+        /// <param name="dbType">SqlSugar数据库类型</param>
+        /// <param name="isAutoCloseConnection">是否自动关闭连接</param>
+        /// <param name="connectionString">链接字符串</param>
+        /// <returns></returns>
+        public static IServiceCollection AddTransientDefaultSqlSugarService(this IServiceCollection service, DbType dbType, bool isAutoCloseConnection, string connectionString)
+        {
+            return service.AddTransient(factory => new DefaultDataBaseService(
+                 dbType, isAutoCloseConnection,
+                 connectionString
+            ));
+        }
     }
 }
