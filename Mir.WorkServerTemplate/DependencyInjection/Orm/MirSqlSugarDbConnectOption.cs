@@ -1,6 +1,6 @@
 ﻿using SqlSugar;
 
-namespace Mir.WorkServer.Extension.Orm
+namespace Mir.WorkServer.DependencyInjection.Orm
 {
     /// <summary>
     /// 数据库配置扩展

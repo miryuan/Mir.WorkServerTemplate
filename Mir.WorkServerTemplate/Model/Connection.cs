@@ -1,9 +1,9 @@
 ﻿namespace Mir.WorkServer.Model
 {
     /// <summary>
-    /// appsettings.json中数据库连接读取
+    /// appsettings.json中数据库连接配置读取
     /// </summary>
-    public class Connection
+    public class DbConnection
     {
         /// <summary>
         /// 数据链接名称
@@ -25,5 +25,20 @@
         /// 链接字符串
         /// </summary>
         public string ConnectionString { get; set; }
+    }
+
+    /// <summary>
+    /// appsettings.json中Redis连接配置读取
+    /// </summary>
+    public class RedisConnection
+    {
+        /// <summary>
+        /// Redis链接字符串
+        /// </summary>
+        public string Connection { get; set; }
+        /// <summary>
+        /// 所有键(key)的前缀
+        /// </summary>
+        public string InstanceName { get; set; }
     }
 }

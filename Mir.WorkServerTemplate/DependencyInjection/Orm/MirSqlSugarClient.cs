@@ -1,8 +1,8 @@
-﻿namespace Mir.WorkServer.Extension.Orm
+﻿namespace Mir.WorkServer.DependencyInjection.Orm
 {
     public class MirSqlSugarClient : SqlSugar.SqlSugarClient
     {
-        public MirSqlSugarClient(Model.Connection config) : base(new SqlSugar.ConnectionConfig()
+        public MirSqlSugarClient(Model.DbConnection config) : base(new SqlSugar.ConnectionConfig()
         {
             ConnectionString = config.ConnectionString,
             DbType = config.DbType,

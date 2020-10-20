@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Mir.WorkServer.Extension.Orm
+namespace Mir.WorkServer.DependencyInjection.Orm
 {
     public class SqlSugarDbContextFactory : ISqlSugarDbContextFactory
     {

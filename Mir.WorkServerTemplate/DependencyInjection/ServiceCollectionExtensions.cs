@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Mir.WorkServer.Extension.Orm;
-using System;
+using Mir.WorkServer.DependencyInjection.Orm;
+using Mir.WorkServer.DependencyInjection.Redis;
+using Mir.WorkServer.Model;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace Mir.WorkServer.Extension
+namespace Mir.WorkServer.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
@@ -23,12 +23,10 @@ namespace Mir.WorkServer.Extension
         {
             ServiceLifetime contextLifetime = ServiceLifetime.Transient;
 
-
             var configuration = (IConfigurationRoot)services.FirstOrDefault(p => p.ServiceType == typeof(IConfigurationRoot)).ImplementationInstance;
-            var connectOptions = configuration.GetSection(section).Get<List<Model.Connection>>();
+            var connectOptions = configuration.GetSection(section).Get<List<Model.DbConnection>>();
             if (connectOptions != null)
             {
-                
                 switch (contextLifetime)
                 {
                     case ServiceLifetime.Scoped:
@@ -56,6 +54,23 @@ namespace Mir.WorkServer.Extension
                         }
                         break;
                 }
+            }
+
+            return services;
+        }
+
+        /// <summary>
+        /// 注入Redis数据库组件
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddRedis(this IServiceCollection services, string section = "RedisConnection")
+        {
+            var configuration = (IConfigurationRoot)services.FirstOrDefault(p => p.ServiceType == typeof(IConfigurationRoot)).ImplementationInstance;
+            var connectOption = configuration.GetSection(section).Get<RedisConnection>();
+            if (connectOption != null)
+            {
+                services.AddSingleton(s => new RedisDbContext(connectOption));
             }
 
             return services;

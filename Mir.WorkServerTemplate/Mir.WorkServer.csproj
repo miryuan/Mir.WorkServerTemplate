@@ -6,12 +6,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Service\obsolete\**" />
+    <Content Remove="Service\obsolete\**" />
+    <EmbeddedResource Remove="Service\obsolete\**" />
+    <None Remove="Service\obsolete\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="DependencyInjection\Redis\RedisConnectionHelp.cs" />
     <Compile Remove="Service\DbContext.cs" />
     <Compile Remove="Service\ISettingService.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.8" />
-    <PackageReference Include="sqlSugarCore" Version="5.0.0.18" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.9" />
+    <PackageReference Include="PinYinConverterCore" Version="1.0.2" />
+    <PackageReference Include="sqlSugarCore" Version="5.0.0.19" />
+    <PackageReference Include="StackExchange.Redis" Version="2.1.58" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Service\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
 </Project>
