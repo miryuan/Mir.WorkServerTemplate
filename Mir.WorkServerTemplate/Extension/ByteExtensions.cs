@@ -159,6 +159,7 @@ namespace Mir.WorkServer.Extension
             return algorithm != null ? algorithm.ComputeHash(bytes) : null;
         }
 
+        
         // /// <summary>
         // /// 保存为文件
         // /// </summary>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Mir.WorkServer.Utility.Lang
+namespace Mir.WorkServer.Utility
 {
     public static class PinYinConverterHelper
     {

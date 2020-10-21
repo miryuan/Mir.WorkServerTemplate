@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>dotnet-Mir.WorkServerTemplate-44847D1A-49CA-49EB-8127-92C06DB4385A</UserSecretsId>
+    <ApplicationIcon>Resources\bi-data.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,6 +28,6 @@
 
   <ItemGroup>
     <Folder Include="Service\" />
-    <Folder Include="Resources\" />
+    <Folder Include="Utility\Encrypt\" />
   </ItemGroup>
 </Project>
