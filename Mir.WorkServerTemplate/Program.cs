@@ -27,8 +27,8 @@ namespace Mir.WorkServer
             return Host.CreateDefaultBuilder(args).ConfigureServices((hostContext, services) =>
                 {
                     services.AddSingleton(config);//注入配置文件(必须)
-                    services.AddSqlSugar();
-                    services.AddRedis();
+                    services.AddSqlSugar();//SqlSugar
+                    services.AddRedis();//Redis
                     //默认主任务
                     services.AddHostedService<MainWorker>();//可以在这里添加另外的工作服务
                 })
