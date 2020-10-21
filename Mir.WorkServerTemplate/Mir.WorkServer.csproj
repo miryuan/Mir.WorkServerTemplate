@@ -28,6 +28,5 @@
 
   <ItemGroup>
     <Folder Include="Service\" />
-    <Folder Include="Utility\Encrypt\" />
   </ItemGroup>
 </Project>

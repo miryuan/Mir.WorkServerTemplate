@@ -12,13 +12,31 @@ namespace Mir.WorkServer.Extension
     public static class StringExtensions
     {
         /// <summary>
+        /// 提取字符串中的数字
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string ExtractDecimal(this string value)
+        {
+            StringBuilder result = new StringBuilder();
+            foreach (char c in value)
+            {
+                if ((Convert.ToInt32(c) >= 48 && Convert.ToInt32(c) <= 57) || Convert.ToInt32(c) == 46)
+                {
+                    result.Append(c);
+                }
+            }
+            return result.ToString();
+        }
+
+        /// <summary>
         /// 将字符串转换成Int32
         /// </summary>
         /// <param name="value">待转换的字符串</param>
         /// <returns>Int32</returns>
         public static int ToInt(this string value)
         {
-            return Int32.Parse(value);
+            return int.Parse(value);
         }
 
         /// <summary>
@@ -31,6 +49,18 @@ namespace Mir.WorkServer.Extension
         {
             var result = defaultValue;
             return int.TryParse(value, out result) ? result : defaultValue;
+        }
+
+        /// <summary>
+        /// 将字符串转换成Int64
+        /// </summary>
+        /// <param name="value">待转换的字符串</param>
+        /// <param name="defaultValue">转换失败时返回的默认值</param>
+        /// <returns>Int64</returns>
+        public static long ToLong(this string value, long defaultValue)
+        {
+            var result = defaultValue;
+            return long.TryParse(value, out result) ? result : defaultValue;
         }
 
         /// <summary>
@@ -64,8 +94,7 @@ namespace Mir.WorkServer.Extension
         /// <returns>Int32 or Null</returns>
         public static int? ToNullableInt(this string value)
         {
-            int result;
-            if (string.IsNullOrEmpty(value) || !int.TryParse(value, out result))
+            if (string.IsNullOrEmpty(value) || !int.TryParse(value, out int result))
             {
                 return null;
             }
@@ -124,14 +153,13 @@ namespace Mir.WorkServer.Extension
         }
 
         /// <summary>
-        /// 
+        /// 将字符型数值转换成可为null数值型
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">字符型数值</param>
         /// <returns></returns>
         public static decimal? ToNullableDecimal(this string value)
         {
-            decimal result;
-            if (string.IsNullOrEmpty(value) || !decimal.TryParse(value, out result))
+            if (string.IsNullOrEmpty(value) || !decimal.TryParse(value, out decimal result))
             {
                 return null;
             }
@@ -145,9 +173,7 @@ namespace Mir.WorkServer.Extension
         /// <returns></returns>
         public static short? ToNullableShort(this string value)
         {
-            short result;
-
-            if (string.IsNullOrEmpty(value) || !short.TryParse(value, out result))
+            if (string.IsNullOrEmpty(value) || !short.TryParse(value, out short result))
             {
                 return null;
             }
@@ -162,9 +188,7 @@ namespace Mir.WorkServer.Extension
         /// <returns></returns>
         public static DateTime? ToNullableDateTime(this string value)
         {
-            DateTime result;
-
-            if (DateTime.TryParse(value, out result))
+            if (DateTime.TryParse(value, out DateTime result))
             {
                 return result;
             }
@@ -189,9 +213,8 @@ namespace Mir.WorkServer.Extension
         /// <returns></returns>
         public static byte? ToNullableByte(this string value)
         {
-            byte result;
 
-            if (string.IsNullOrEmpty(value) || !byte.TryParse(value, out result))
+            if (string.IsNullOrEmpty(value) || !byte.TryParse(value, out byte result))
             {
                 return null;
             }
@@ -238,15 +261,13 @@ namespace Mir.WorkServer.Extension
         }
 
         /// <summary>
-        /// 
+        /// 将字符型bool值转换成可为null布尔型
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">字符型bool值</param>
         /// <returns></returns>
         public static bool? ToNullableBool(this string value)
         {
-            bool result;
-
-            if (string.IsNullOrEmpty(value) || !bool.TryParse(value, out result))
+            if (string.IsNullOrEmpty(value) || !bool.TryParse(value, out bool result))
             {
                 return null;
             }
@@ -285,11 +306,29 @@ namespace Mir.WorkServer.Extension
         /// 将字符串转换成对应的枚举类型
         /// </summary>
         /// <param name="value"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="T">枚举类型</typeparam>
+        /// <returns>枚举值</returns>
         public static T ToEnum<T>(this string value)
         {
             return (T)Enum.Parse(typeof(T), value);
+        }
+
+        /// <summary>
+        /// 将字符串转换成对应的枚举类型
+        /// </summary>
+        /// <param name="value"></param>
+        /// <typeparam name="T">枚举类型</typeparam>
+        /// <param name="defaultValue">转换失败时输出的默认值</param>
+        /// <returns>枚举值</returns>
+        public static T ToEnum<T>(this string value, T defaultValue)
+        {
+            try
+            {
+                return (T)Enum.Parse(typeof(T), value);
+            }
+            catch { }
+
+            return defaultValue;
         }
 
         /// <summary>
@@ -313,7 +352,7 @@ namespace Mir.WorkServer.Extension
         }
 
         /// <summary>
-        // 获取文件字符串的扩展名
+        /// 获取文件字符串的扩展名
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -326,6 +365,20 @@ namespace Mir.WorkServer.Extension
                 ret = temp[temp.Length - 1];
             }
             return ret;
+        }
+
+        /// <summary>
+        /// 获取Uri字符串的文件扩展名
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string FindUriExtensionName(this string str)
+        {
+            Uri value = new Uri(str);
+            if (value != null && value.Segments != null && value.Segments.Length > 0)
+                return value.Segments[value.Segments.Length - 1];
+            else
+                return "";
         }
 
         /// <summary>
