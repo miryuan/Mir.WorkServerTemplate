@@ -2,14 +2,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Mir.WorkServer.DependencyInjection;
-using Mir.WorkServer.Works;
+using Mir.WindowsServiceTemplate.DependencyInjection;
+using Mir.WindowsServiceTemplate.Works;
 using System.IO;
-using NLog;
-using NLog.Extensions.Logging;
 using System.Linq;
 
-namespace Mir.WorkServer
+namespace Mir.WindowsServiceTemplate
 {
     public class Program
     {
@@ -25,20 +23,14 @@ namespace Mir.WorkServer
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json");
             var config = builder.Build();
-            
+
             return Host.CreateDefaultBuilder(args).ConfigureServices((hostContext, services) =>
                 {
                     services.AddSingleton(config);//注入配置文件(必须)
                     services.AddSqlSugar();//SqlSugar
                     services.AddRedis();//Redis
-                    
                     //默认主任务
                     services.AddHostedService<MainWorker>();//可以在这里添加另外的工作服务
-                })
-                .ConfigureLogging(logging =>
-                {
-                    logging.ClearProviders();
-                    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
                 })
                 .ConfigureLogging(builder => builder.AddFile());//日志写文件
         }

@@ -3,8 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>dotnet-Mir.WorkServerTemplate-44847D1A-49CA-49EB-8127-92C06DB4385A</UserSecretsId>
-    <ApplicationIcon>Resources\bi-data.ico</ApplicationIcon>
-    <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
+    <ApplicationIcon>Resources\Smart Recommendtion.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,12 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
-    <PackageReference Include="NLog.Extensions.Logging" Version="1.7.2" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="4.12.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.9" />
     <PackageReference Include="PinYinConverterCore" Version="1.0.2" />
-    <PackageReference Include="sqlSugarCore" Version="5.0.3" />
-    <PackageReference Include="StackExchange.Redis" Version="2.2.4" />
+    <PackageReference Include="sqlSugarCore" Version="5.0.0.19" />
+    <PackageReference Include="StackExchange.Redis" Version="2.1.58" />
   </ItemGroup>
 
   <ItemGroup>
